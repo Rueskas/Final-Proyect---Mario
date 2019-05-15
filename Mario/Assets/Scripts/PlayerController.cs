@@ -34,13 +34,13 @@ public class PlayerController : MonoBehaviour
         colliders2D = GetComponentsInChildren<Collider2D>();
     }
 
-    void Start()
+    private void Start()
     {
         speed = 0.1f;
         jumpForce = 3.4f;
     }
 
-    void Update()
+    private void Update()
     {
         GetInput();
         if (horizontalInput != 0)
@@ -116,22 +116,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isGrounded = false;
-    }
-
     private void GetInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         jumpInput = Input.GetAxisRaw("Jump");
     }
 
-    void OnTriggerEnter2D(Collider2D trigger)
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D trigger)
     {
         if(trigger.tag == "Enemy")
         {
-            isEnemyStunned = 
+            isEnemyStunned =
                 trigger.GetComponentInChildren<Animator>().GetBool("Stun");
             if(!isEnemyStunned)
             {
@@ -146,28 +146,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D trigger)
+    private void OnTriggerStay2D(Collider2D trigger)
     {
-        if (trigger.tag == "ground")
+        if (trigger.tag == "ground" || trigger.tag == "Pow")
         {
             isGrounded = true;
         }
     }
 
-    void OnTriggerExit2D(Collider2D trigger)
+    private void OnTriggerExit2D(Collider2D trigger)
     {
-        if (trigger.tag == "ground")
+        if (trigger.tag == "ground" || trigger.tag == "Pow")
         {
             isGrounded = false;
         }
     }
 
-    public void Fall()
+    private void Fall()
     {
         for (int i = 0; i < colliders2D.Length; i++)
         {
             colliders2D[i].enabled = false;
         }
         isFalling = true;
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 }

@@ -36,8 +36,9 @@ public class TwoPlayersController1 : MonoBehaviour
 
     void Start()
     {
+        lives = 3;
         speed = 0.1f;
-        jumpForce = 3.4f;
+        jumpForce = 3.3f;
     }
 
     void Update()
@@ -168,5 +169,10 @@ public class TwoPlayersController1 : MonoBehaviour
             colliders2D[i].enabled = false;
         }
         isFalling = true;
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 }

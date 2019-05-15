@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-    public GameObject prefabEnemy;
+    public Enemy prefabEnemy;
+    public Enemy newEnemy;
     protected float generatorTimer = 5f;
     protected int maxEnemies;
 
@@ -22,7 +23,7 @@ public class EnemyGenerator : MonoBehaviour
             CancellGenerator();
     }
 
-    void CreateEnemy()
+    public void CreateStartEnemies()
     {
         Instantiate(prefabEnemy, transform.position, Quaternion.identity);
         maxEnemies--;
@@ -30,11 +31,19 @@ public class EnemyGenerator : MonoBehaviour
 
     public void StartGenerator()
     {
-        InvokeRepeating("CreateEnemy", 0f, generatorTimer);
+        InvokeRepeating("CreateStartEnemies", 0f, generatorTimer);
     }
 
     public void CancellGenerator()
     {
-        CancelInvoke("CreateEnemy");
+        CancelInvoke("CreateStartEnemies");
+    }
+
+    public void CreateEnemy(int level, float speed)
+    {
+        newEnemy.SetLevel(level);
+        newEnemy.SetSpeed(speed);
+        Instantiate(newEnemy, transform.position, Quaternion.identity);
+
     }
 }

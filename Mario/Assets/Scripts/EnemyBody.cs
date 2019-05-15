@@ -23,6 +23,6 @@ public class EnemyBody : MonoBehaviour
 
     void EndTurn()
     {
-        transform.parent.SendMessage("EndTurn");
+        transform.parent.SendMessage("StunController");
     }
 }

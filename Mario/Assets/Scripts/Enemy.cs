@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     bool isDeath;
     bool isTurning;
     int level;
+    EnemyGenerator enemyGenerator;
     Animator anim;
     Collider2D col2D;
     public enum Direction {Left, Right};
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         col2D = GetComponent<Collider2D>();
+        enemyGenerator = FindObjectOfType<EnemyGenerator>();
     }
     // Start is called before the first frame update
     void Start()
@@ -111,7 +113,10 @@ public class Enemy : MonoBehaviour
                 && isTurning == false)
         {
             if (transformEnemy.position.y < -2.5)
+            {
+                enemyGenerator.CreateEnemy(this.level, this.speed);
                 Destroy(gameObject);
+            }
             else if (transformEnemy.position.x < 0)
                 transformEnemy.position = new Vector2(
                     8.7f, transform.position.y);
@@ -120,7 +125,9 @@ public class Enemy : MonoBehaviour
                     -8.7f, transform.position.y);
         }
         else if (transformEnemy.position.y < -5.5)
+        {
             Destroy(gameObject);
+        }
         
     }
 
@@ -135,11 +142,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.tag == "PlayerHead" && isGrounded && isStunned == false)
-        {
-            isStunned = true;
-        }
-        else if (trigger.tag == "Player" && isGrounded && isStunned)
+        if (trigger.tag == "Player" && isGrounded && isStunned)
         {
             isDeath = true;
         }
@@ -174,17 +177,35 @@ public class Enemy : MonoBehaviour
         level++;
     }
 
-    public void EndTurn()
+    public void StunController()
     {
-        isTurning = false;
+        if (isGrounded && isStunned == false)
+        {
+            isStunned = true;
+        }
+        else if (isGrounded && isStunned)
+        {
+            isStunned = false;
+            isTurning = false;
+        }
     }
-    
-    public void SetSpeed(int speed) //For the generator TO DO
+
+    public bool GetStun()
+    {
+        return isStunned;
+    }
+
+    public bool GetTurn()
+    {
+        return isTurning;
+    }
+
+    public void SetSpeed(float speed) 
     {
         this.speed = speed;
     }
 
-    public void SetLevel(int level) //For the generator TO DO
+    public void SetLevel(int level) 
     {
         this.level = level;
     }

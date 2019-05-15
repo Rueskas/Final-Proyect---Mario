@@ -169,4 +169,9 @@ public class TwoPlayersController2 : MonoBehaviour
         }
         isFalling = true;
     }
+
+    public int GetLives()
+    {
+        return lives;
+    }
 }
