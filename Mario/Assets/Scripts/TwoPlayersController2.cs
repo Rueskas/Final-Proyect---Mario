@@ -111,7 +111,15 @@ public class TwoPlayersController2 : MonoBehaviour
 
         if (transform.position.y < -5.5)
         {
-            Destroy(gameObject);
+            lives--;
+            if (lives > 0)
+            {
+                transform.position = new Vector2(0, -3.5f); // Provisional
+            }
+            else
+            {
+                //END GAME TO DO
+            }
         }
     }
 

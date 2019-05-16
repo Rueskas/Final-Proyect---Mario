@@ -24,7 +24,7 @@ public class FireBallController : MonoBehaviour
         speedX = 0.025f;
         speedY = 0.025f;
         movementActived = false;
-        timer = 100;
+        timer = 5000;
     }
     
     void Update()

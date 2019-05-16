@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyGenerator : MonoBehaviour
+public abstract class EnemyGenerator : MonoBehaviour
 {
-    public Enemy prefabEnemy;
-    public Enemy newEnemy;
-    protected float generatorTimer = 5f;
+    private float generatorTimer;
+    private float initialTimer;
     protected int maxEnemies;
 
     // Start is called before the first frame update
+    void Awake()
+    {
+    }
+
     void Start()
     {
         maxEnemies = 3;
+        initialTimer = Random.Range(0, 3);
+        generatorTimer = Random.Range(5, 15);
         StartGenerator();
     }
 
@@ -23,15 +28,11 @@ public class EnemyGenerator : MonoBehaviour
             CancellGenerator();
     }
 
-    public void CreateStartEnemies()
-    {
-        Instantiate(prefabEnemy, transform.position, Quaternion.identity);
-        maxEnemies--;
-    }
+    public abstract void CreateStartEnemies();
 
     public void StartGenerator()
     {
-        InvokeRepeating("CreateStartEnemies", 0f, generatorTimer);
+        InvokeRepeating("CreateStartEnemies", initialTimer, generatorTimer);
     }
 
     public void CancellGenerator()
@@ -39,11 +40,5 @@ public class EnemyGenerator : MonoBehaviour
         CancelInvoke("CreateStartEnemies");
     }
 
-    public void CreateEnemy(int level, float speed)
-    {
-        newEnemy.SetLevel(level);
-        newEnemy.SetSpeed(speed);
-        Instantiate(newEnemy, transform.position, Quaternion.identity);
-
-    }
+    public abstract void CreateEnemy(int level, float speed);
 }

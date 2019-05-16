@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         speed = 0.1f;
         jumpForce = 3.4f;
+        lives = 3;
     }
 
     private void Update()
@@ -74,6 +75,15 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("Damaged", false);
             anim.SetBool("Burned", false);
+        }
+
+        if(isFalling)
+        {
+            anim.SetBool("Falling", true);
+        }
+        else
+        {
+            anim.SetBool("Falling", false);
         }
         
     }
@@ -112,7 +122,15 @@ public class PlayerController : MonoBehaviour
 
         if(transform.position.y < -5.5)
         {
-            Destroy(gameObject);
+            lives--;
+            if(lives > 0)
+            {
+                Restart();// Provisional
+            }
+            else
+            {
+                //END GAME TO DO
+            }
         }
     }
 
@@ -169,6 +187,18 @@ public class PlayerController : MonoBehaviour
             colliders2D[i].enabled = false;
         }
         isFalling = true;
+    }
+
+    private void Restart()
+    {
+        for (int i = 0; i < colliders2D.Length; i++)
+        {
+            colliders2D[i].enabled = true;
+        }
+        transform.position = new Vector2(0, -3.5f); 
+        isFalling = false;
+        isDamaged = false;
+        isBurned = false;
     }
 
     public int GetLives()

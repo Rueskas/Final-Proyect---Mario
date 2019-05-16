@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pow : MonoBehaviour
 {
-    protected Enemy[] Enemies;
+    protected GameObject[] Enemies;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +25,10 @@ public class Pow : MonoBehaviour
 
     void Active()
     {
-        Enemies = FindObjectsOfType<Enemy>();
-        foreach(Enemy e in Enemies)
+        Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach(GameObject e in Enemies)
         {
-            e.StunController();
+            e.SendMessage("StunController");
         }
     }
 }

@@ -80,8 +80,6 @@ public class Enemy : MonoBehaviour
         {
             anim.SetBool("Turn", false);
         }
-
-        anim.SetInteger("Level", level); //For the generator TO DO
     }
 
     void FixedUpdate()
@@ -188,6 +186,11 @@ public class Enemy : MonoBehaviour
             isStunned = false;
             isTurning = false;
         }
+    }
+
+    public void EndTurn()
+    {
+        isTurning = false;
     }
 
     public bool GetStun()
