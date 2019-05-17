@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     bool isDeath;
     bool isTurning;
     int level;
-    EnemyGenerator enemyGenerator;
+    EnemyGenerator1 enemyGenerator;
     Animator anim;
     Collider2D col2D;
     public enum Direction {Left, Right};
@@ -20,17 +20,18 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        speed = 0.05f;
+        level = 1;
+
         transformEnemy = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         col2D = GetComponent<Collider2D>();
-        enemyGenerator = FindObjectOfType<EnemyGenerator>();
+        enemyGenerator = FindObjectOfType<EnemyGenerator1>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        speed = 0.05f;
-        level = 1;
         
         isStunned = false;
         isDeath = false;
@@ -125,6 +126,7 @@ public class Enemy : MonoBehaviour
         else if (transformEnemy.position.y < -5.5)
         {
             Destroy(gameObject);
+            GameSceneController.EnemyKilled(50);
         }
         
     }

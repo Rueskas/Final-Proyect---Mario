@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyGenerator1 : EnemyGenerator
 {
     public Enemy prefabEnemy;
-    public Enemy newEnemy;
 
     public override void CreateEnemy(int level, float speed)
     {
-        newEnemy.SetSpeed(speed);
-        newEnemy.SetLevel(level);
-        Instantiate(newEnemy, transform.position, Quaternion.identity);
+        Enemy enemyCreated = Instantiate(prefabEnemy, transform.position, Quaternion.identity);
+
+        enemyCreated.SetSpeed(speed);
+        enemyCreated.SetLevel(level);
     }
 
     public override void CreateStartEnemies()

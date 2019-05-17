@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 586075316179018229}
   m_Layer: 0
   m_Name: EnemyGeneratorType2
-  m_TagString: Untagged
+  m_TagString: Generator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,6 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabEnemy: {fileID: 4782627422128367928, guid: 649c91555f2e7044890163cc8b44a395,
-    type: 3}
-  newEnemy: {fileID: 4782627422128367928, guid: 649c91555f2e7044890163cc8b44a395,
     type: 3}

@@ -11,32 +11,40 @@ public abstract class EnemyGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        initialTimer = Random.Range(0, 3);
+        generatorTimer = Random.Range(5, 10);
+        StartGenerator();
     }
 
     void Start()
     {
-        maxEnemies = 3;
-        initialTimer = Random.Range(0, 3);
-        generatorTimer = Random.Range(5, 15);
-        StartGenerator();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (maxEnemies == 0)
+        print("max " + maxEnemies);
+        if (maxEnemies <= 0)
             CancellGenerator();
+    }
+
+    public void SetMaxEnemies(int maxEnemies)
+    {
+        this.maxEnemies = maxEnemies;
     }
 
     public abstract void CreateStartEnemies();
 
     public void StartGenerator()
     {
+        print("empezado");
         InvokeRepeating("CreateStartEnemies", initialTimer, generatorTimer);
     }
 
     public void CancellGenerator()
     {
+        print("cancelado");
         CancelInvoke("CreateStartEnemies");
     }
 

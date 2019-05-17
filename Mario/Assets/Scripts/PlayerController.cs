@@ -90,15 +90,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         GetInput();
 
-        if (horizontalInput > 0)
+        if (horizontalInput > 0 && !isDamaged)
         {
             transformPlayer.position = new Vector3(transformPlayer.position.x + speed, transformPlayer.position.y, 0);
             sprite.flipX = true;
         }
-        else if (horizontalInput < 0)
+        else if (horizontalInput < 0 && !isDamaged)
         {
             transformPlayer.position = new Vector3(transformPlayer.position.x - speed, transformPlayer.position.y, 0);
             sprite.flipX = false;
@@ -126,10 +125,6 @@ public class PlayerController : MonoBehaviour
             if(lives > 0)
             {
                 Restart();// Provisional
-            }
-            else
-            {
-                //END GAME TO DO
             }
         }
     }

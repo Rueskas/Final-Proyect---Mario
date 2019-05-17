@@ -9,9 +9,9 @@ public class Enemy2 : MonoBehaviour
     bool isStunned;
     bool isDeath;
     bool isTurning;
-    bool reduceLives;
+    bool reduceLevel;
     int level;
-    EnemyGenerator enemyGenerator;
+    EnemyGenerator2 enemyGenerator;
     Animator anim;
     Collider2D[] col2D;
     public enum Direction { Left, Right };
@@ -21,22 +21,23 @@ public class Enemy2 : MonoBehaviour
 
     void Awake()
     {
+        level = 2;
+        speed = 0.05f;
+
         transformEnemy = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         col2D = GetComponents<Collider2D>();
-        enemyGenerator = FindObjectOfType<EnemyGenerator>();
+        enemyGenerator = FindObjectOfType<EnemyGenerator2>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        speed = 0.05f;
-        level = 2;
 
         isStunned = false;
         isDeath = false;
         isTurning = false;
-        reduceLives = false;
+        reduceLevel = false;
         if (transformEnemy.position.x < 0)
             direction = Direction.Right;
         else
@@ -83,10 +84,10 @@ public class Enemy2 : MonoBehaviour
             anim.SetBool("Turn", false);
         }
 
-        if(reduceLives)
+        if(reduceLevel)
         {
             anim.SetBool("Reduce", true);
-            reduceLives = false;
+            reduceLevel = false;
         }
         else
         {
@@ -141,6 +142,7 @@ public class Enemy2 : MonoBehaviour
         else if (transformEnemy.position.y < -5.5)
         {
             Destroy(gameObject);
+            GameSceneController.EnemyKilled(100);
         }
 
     }
@@ -190,7 +192,7 @@ public class Enemy2 : MonoBehaviour
         {
             if (level == 2)
             {
-                reduceLives = true;
+                reduceLevel = true;
                 level--;
                 speed += speed / 2;
             }

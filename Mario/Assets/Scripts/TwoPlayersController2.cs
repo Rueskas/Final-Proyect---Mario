@@ -108,7 +108,6 @@ public class TwoPlayersController2 : MonoBehaviour
             transform.position = new Vector2(
                 transform.position.x, transform.position.y - 0.07f);
         }
-
         if (transform.position.y < -5.5)
         {
             lives--;
