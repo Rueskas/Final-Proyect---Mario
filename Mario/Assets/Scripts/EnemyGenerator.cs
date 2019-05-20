@@ -1,30 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class EnemyGenerator : MonoBehaviour
 {
     private float generatorTimer;
     private float initialTimer;
-    protected int maxEnemies;
+    public int maxEnemies;
 
     // Start is called before the first frame update
     void Awake()
+    {
+        maxEnemies = System.Convert.ToInt32(SceneManager.GetActiveScene().name.Substring(
+            SceneManager.GetActiveScene().name.LastIndexOf("l") + 1));
+    }
+
+    void Start()
     {
         initialTimer = Random.Range(0, 3);
         generatorTimer = Random.Range(5, 10);
         StartGenerator();
     }
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        print("max " + maxEnemies);
         if (maxEnemies <= 0)
             CancellGenerator();
     }
@@ -38,13 +39,11 @@ public abstract class EnemyGenerator : MonoBehaviour
 
     public void StartGenerator()
     {
-        print("empezado");
         InvokeRepeating("CreateStartEnemies", initialTimer, generatorTimer);
     }
 
     public void CancellGenerator()
     {
-        print("cancelado");
         CancelInvoke("CreateStartEnemies");
     }
 

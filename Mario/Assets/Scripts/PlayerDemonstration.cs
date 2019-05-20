@@ -60,6 +60,9 @@ public class PlayerDemonstration : MonoBehaviour
 
     public void Jump()
     {
+        print(ForceMode2D.Impulse);
+        print(jumpForce);
+        print(new Vector2(0, jumpForce));
         rb2d.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     }
     

@@ -7,6 +7,9 @@ public class FireBallController : MonoBehaviour
     protected Transform transformFireBall;
     protected Animator anim;
     protected SpriteRenderer bodySprite;
+    protected ColliderX collX;
+    protected ColliderY collY;
+    protected CircleCollider2D coll;
 
     public CapsuleCollider2D[] colliders;
 
@@ -20,11 +23,14 @@ public class FireBallController : MonoBehaviour
         transformFireBall = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         bodySprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        collX = gameObject.GetComponentInChildren<ColliderX>();
+        collY = gameObject.GetComponentInChildren<ColliderY>();
+        coll = GetComponent<CircleCollider2D>();
 
         speedX = 0.025f;
         speedY = 0.025f;
         movementActived = false;
-        timer = 5000;
+        timer = 1000;
     }
     
     void Update()
@@ -53,6 +59,9 @@ public class FireBallController : MonoBehaviour
     {
         bodySprite.enabled = true;
         anim.enabled = true;
+        collX.enabled = true;
+        collY.enabled = true;
+        coll.enabled = true;
     }
 
     public void StartMovement()

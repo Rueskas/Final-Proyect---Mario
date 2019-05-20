@@ -9,8 +9,7 @@ public class GameSceneController : MonoBehaviour
     private static int level = 1;
     private static int enemiesDeath;
     private int enemies;
-    public PlayerController player;
-    private GameObject[] generators;
+    private string quantityPlayers;
 
     void Awake()
     {
@@ -19,32 +18,36 @@ public class GameSceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        generators = GameObject.FindGameObjectsWithTag("Generator");
-        foreach (GameObject generator in generators)
-        {
-            generator.GetComponent<EnemyGenerator>().SetMaxEnemies(level);
-        }
-        enemies = generators.Length * level;
-        enemiesDeath = 0;
+        quantityPlayers = 
+            GameObject.FindGameObjectsWithTag("Player").Length == 1 ? 
+            "OnePlayer" : "TwoPlayers";
+        enemies = 0;
+        enemiesDeath = -1;
     }
 
     // Update is called once per frame
+
     void Update()
     {
-        
-    }
-
-    void FixedUpdate()
-    {
-        if (player.GetLives() == 0)
-        {
-            //SceneManager.LoadScene("ScoreScene"); TO DO
-        }
+        print(level);
         if (enemies == enemiesDeath)
         {
-            level++;
-            SceneManager.LoadScene("SceneOnePlayerLevel" + level);
-            Restart();
+            if (level <= 3 &&
+                SceneManager.GetActiveScene().name.StartsWith("Scene"))
+            {
+                enemiesDeath = -1;
+                enemies = 0;
+                SceneManager.LoadScene("Demonstration" + 1);
+            }
+            else if (SceneManager.GetActiveScene().name.
+                StartsWith("Demonstration"))
+            {
+                enemies = 2 * level;
+                enemiesDeath = 0;
+                SceneManager.LoadScene("Scene" + quantityPlayers +
+                    "Level" + level);
+                level++;
+            }
         }
     }
 
@@ -54,14 +57,8 @@ public class GameSceneController : MonoBehaviour
         enemiesDeath++;
     }
 
-    public void Restart()
+    public void GoToSceneScore()
     {
-        generators = GameObject.FindGameObjectsWithTag("Generator");
-        foreach (GameObject generator in generators)
-        {
-            generator.GetComponent<EnemyGenerator>().SetMaxEnemies(level);
-        }
-        enemies = generators.Length * level;
-        enemiesDeath = 0;
+        SceneManager.LoadScene("SceneScore");
     }
 }
