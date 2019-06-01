@@ -19,14 +19,9 @@ public class ColliderX : MonoBehaviour
 
     void FixedUpdate()  
     {
-        /*Sometimes when te fireball go from one side of the screen to the other,
-         * the collider position can be different of the sprite position (FIXED)
-         */
         if (trans.position.x != transform.parent.position.x ||
                 trans.position.y != transform.parent.position.y)
-            trans.position = new Vector2(
-                transform.parent.position.x,
-                    transform.parent.position.y);
+            trans.position = new Vector2(0, 0);
     }
 
     void OnCollisionEnter2D()

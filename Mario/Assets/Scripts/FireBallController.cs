@@ -7,15 +7,19 @@ public class FireBallController : MonoBehaviour
     protected Transform transformFireBall;
     protected Animator anim;
     protected SpriteRenderer bodySprite;
-    protected ColliderX collX;
-    protected ColliderY collY;
-    protected CircleCollider2D coll;
-
-    public CapsuleCollider2D[] colliders;
+    public GameObject collX;
+    public GameObject collY;
+    protected Collider2D[] collidersX;
+    protected Collider2D[] collidersY;
+    protected Collider2D coll;
 
     protected bool movementActived;
     protected float speedX, speedY;
     protected int timer;
+
+    public AudioClip rebound;
+    protected AudioSource audioSource;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,14 +27,16 @@ public class FireBallController : MonoBehaviour
         transformFireBall = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         bodySprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        collX = gameObject.GetComponentInChildren<ColliderX>();
-        collY = gameObject.GetComponentInChildren<ColliderY>();
-        coll = GetComponent<CircleCollider2D>();
+        coll = GetComponent<Collider2D>();
+        collidersX = collX.GetComponents<Collider2D>();
+        collidersY = collY.GetComponents<Collider2D>();
+        audioSource = GetComponent<AudioSource>();
 
         speedX = 0.025f;
         speedY = 0.025f;
         movementActived = false;
-        timer = 1000;
+        timer = 400;
+        audioSource.clip = rebound;
     }
     
     void Update()
@@ -51,7 +57,11 @@ public class FireBallController : MonoBehaviour
 
         if (transformFireBall.position.x < -9 || transformFireBall.position.x > 9)
         {
-            transformFireBall.position = new Vector2(-transform.position.x, transform.position.y);
+            CollideX();
+        }
+        if (transformFireBall.position.y > 5 )
+        {
+            CollideY();
         }
     }
 
@@ -59,10 +69,15 @@ public class FireBallController : MonoBehaviour
     {
         bodySprite.enabled = true;
         anim.enabled = true;
-        collX.enabled = true;
-        collY.enabled = true;
+        for (int i = 0; i < collidersX.Length; i++)
+        {
+            collidersX[i].enabled = true;
+            collidersY[i].enabled = true;
+        }
         coll.enabled = true;
-    }
+        collX.GetComponent<ColliderX>().enabled = true;
+        collY.GetComponent<ColliderY>().enabled = true;
+}
 
     public void StartMovement()
     {
@@ -72,10 +87,12 @@ public class FireBallController : MonoBehaviour
     void CollideX()
     {
         speedX = -speedX;
+        audioSource.Play();
     }
 
     void CollideY()
     {
         speedY = -speedY;
+        audioSource.Play();
     }
 }

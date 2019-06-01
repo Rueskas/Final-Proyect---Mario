@@ -5,16 +5,20 @@ using UnityEngine;
 public class Pow : MonoBehaviour
 {
     protected GameObject[] Enemies;
+    protected int hits;
     // Start is called before the first frame update
     void Start()
     {
-        
+        hits = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(hits == 3)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D trigger)
@@ -25,6 +29,7 @@ public class Pow : MonoBehaviour
 
     void Active()
     {
+        hits++;
         Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(GameObject e in Enemies)
         {

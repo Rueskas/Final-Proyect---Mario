@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
     protected float speed;
+    protected float limitSpeed;
     bool isGrounded;
     bool isStunned;
     bool isDeath;
     bool isTurning;
     int level;
     EnemyGenerator1 enemyGenerator;
+    MultiEnemyGeneratorController multiEnemyGenerator;
     Animator anim;
     Collider2D col2D;
     public enum Direction {Left, Right};
@@ -20,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        limitSpeed = 0.11f;
         speed = 0.05f;
         level = 1;
 
@@ -28,11 +32,12 @@ public class Enemy : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         col2D = GetComponent<Collider2D>();
         enemyGenerator = FindObjectOfType<EnemyGenerator1>();
+        multiEnemyGenerator =
+            FindObjectOfType<MultiEnemyGeneratorController>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        
         isStunned = false;
         isDeath = false;
         isTurning = false;
@@ -113,7 +118,10 @@ public class Enemy : MonoBehaviour
         {
             if (transformEnemy.position.y < -2.5)
             {
-                enemyGenerator.CreateEnemy(this.level, this.speed);
+                if (multiEnemyGenerator == null)
+                    enemyGenerator.CreateEnemy(this.level, this.speed, 1);
+                else
+                    multiEnemyGenerator.CreateEnemy(this.level, this.speed, 1);
                 Destroy(gameObject);
             }
             else if (transformEnemy.position.x < 0)
@@ -126,7 +134,10 @@ public class Enemy : MonoBehaviour
         else if (transformEnemy.position.y < -5.5)
         {
             Destroy(gameObject);
-            GameSceneController.EnemyKilled(50);
+            if(SceneManager.GetActiveScene().name.StartsWith("Scene"))
+                GameSceneController.EnemyKilled(50);
+            else
+                GameSceneController.EnemyKilled(0);
         }
         
     }
@@ -173,6 +184,8 @@ public class Enemy : MonoBehaviour
     public void LevelUp()
     {
         speed += speed/2;
+        if (speed > limitSpeed)
+            speed = limitSpeed;
         isStunned = false;
         level++;
     }

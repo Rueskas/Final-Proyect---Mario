@@ -5,12 +5,14 @@ using System.IO;
 
 class ScoreBoard
 {
-    private Dictionary<string, int> scores = new Dictionary<string, int>();
-    private List<int> punctuations = new List<int>();
+    private Dictionary<string, int> scores;
+    private List<int> punctuations;
     private string path;
 
     public ScoreBoard(string path)
     {
+        punctuations = new List<int>();
+        scores = new Dictionary<string, int>();
         this.path = path;
         Load(path);
     }
@@ -41,22 +43,11 @@ class ScoreBoard
         return scores[name];
     }
 
-    public string GetName(int punctuation)
-    {
-        foreach (KeyValuePair<string, int> keyValuePair in scores)
-        {
-            if (keyValuePair.Value == punctuation)
-                return keyValuePair.Key;
-        }
-
-        return "Name doesn't exists";
-    }
-
     public bool Add(string name, int punctuation)
     {
         if (!scores.ContainsKey(name))
         {
-            if (punctuations.Count < 10)
+            if (punctuations.Count < 5)
             {
                 scores.Add(name, punctuation);
                 punctuations.Add(punctuation);
@@ -67,7 +58,7 @@ class ScoreBoard
                 string keyToRemove = "";
                 for (int i = 0; i < punctuations.Count; i++)
                 {
-                    if (punctuation > punctuations[i] && keyToRemove != "")
+                    if (punctuation > punctuations[i] && keyToRemove == "")
                     {
                         foreach (KeyValuePair<string, int> keyValuePair 
                                                                 in scores)
@@ -92,14 +83,30 @@ class ScoreBoard
             return false;
     }
 
-    public void Save()
+    public bool Save()
     {
-        StreamWriter scoreWriter = new StreamWriter(path);
-        foreach (KeyValuePair<string, int> keyValuePair in scores)
+        try
         {
-            scoreWriter.WriteLine(keyValuePair.Key + ";" + keyValuePair.Value);
+            StreamWriter scoreWriter = new StreamWriter(path);
+            foreach (KeyValuePair<string, int> keyValuePair in scores)
+            {
+                scoreWriter.WriteLine(keyValuePair.Key + ";" + keyValuePair.Value);
+            }
+            scoreWriter.Close();
+            return true;
         }
-        scoreWriter.Close();
+        catch (PathTooLongException)
+        {
+            return false;
+        }
+        catch (IOException)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public bool Load(string path)

@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
+    path: Assets/Scenes/InitialScene.unity
+    guid: 600bb1dc0e27f0746a68fd04d10d3639
+  - enabled: 1
     path: Assets/Scenes/Demonstration1.unity
     guid: 9f9d68621cafc69469c2b5b9d14488e9
+  - enabled: 1
+    path: Assets/Scenes/Demonstration2.unity
+    guid: c464986b62cd0fb49b117dcf5d15b9b2
+  - enabled: 1
+    path: Assets/Scenes/Demonstration3.unity
+    guid: a79ca79d4d896f24686e5723e469f8e0
   - enabled: 1
     path: Assets/Scenes/SceneOnePlayerLevel1.unity
     guid: 703b21aedb9252d43af94c4bd61c1a55
@@ -18,9 +27,24 @@ EditorBuildSettings:
     path: Assets/Scenes/SceneOnePlayerLevel2.unity
     guid: dc2423ca086567f42b0eb2f3095e7ff5
   - enabled: 1
+    path: Assets/Scenes/SceneOnePlayerLevel3.unity
+    guid: b6004e78023810d49bbd57e5d7a5070b
+  - enabled: 1
+    path: Assets/Scenes/SceneOnePlayerLevel4.unity
+    guid: a84865470627d094b8dfab54daced6a4
+  - enabled: 1
+    path: Assets/Scenes/SceneScore.unity
+    guid: 539a9ae162de45c47a3208033ed0ef1d
+  - enabled: 1
     path: Assets/Scenes/SceneTwoPlayersLevel1.unity
     guid: c3ed389420709a64cb71777a7efe2748
   - enabled: 1
     path: Assets/Scenes/SceneTwoPlayersLevel2.unity
     guid: ab8b88773a30eb743b838ad2f028eaae
+  - enabled: 1
+    path: Assets/Scenes/SceneTwoPlayersLevel3.unity
+    guid: 123eb851cb44af64a910a716a1292e2e
+  - enabled: 1
+    path: Assets/Scenes/SceneTwoPlayersLevel4.unity
+    guid: 9a700c908e6a71241ad8f7f95e63f0d4
   m_configObjects: {}

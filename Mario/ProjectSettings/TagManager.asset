@@ -17,6 +17,11 @@ TagManager:
   - FireballCollX
   - FireballCollY
   - Generator
+  - messageDemonstration
+  - messageArrows
+  - messageJump
+  - Letter
+  - Lives
   layers:
   - Default
   - TransparentFX

@@ -14,6 +14,9 @@ public class PlayerDemonstration : MonoBehaviour
     float jumpForce;
 
     bool isGrounded;
+    
+    protected AudioSource audioSource;
+    public AudioClip jump;
 
     private void Awake()
     {
@@ -22,12 +25,13 @@ public class PlayerDemonstration : MonoBehaviour
         transformPlayer = GetComponent<Transform>();
         sprite = GetComponent<SpriteRenderer>();
         colliders2D = GetComponentsInChildren<Collider2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
-        speed = 0.05f;
-        jumpForce = 3.4f;
+        speed = 0.06f;
+        jumpForce = 3.6f;
     }
 
     private void Update()
@@ -60,10 +64,12 @@ public class PlayerDemonstration : MonoBehaviour
 
     public void Jump()
     {
-        print(ForceMode2D.Impulse);
-        print(jumpForce);
-        print(new Vector2(0, jumpForce));
-        rb2d.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        if (isGrounded)
+        {
+            rb2d.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            audioSource.clip = jump;
+            audioSource.Play();
+        }
     }
     
     public void SetIdle()

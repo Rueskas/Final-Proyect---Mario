@@ -5,15 +5,20 @@ using UnityEngine.SceneManagement;
 
 public abstract class EnemyGenerator : MonoBehaviour
 {
-    private float generatorTimer;
+    protected float generatorTimer;
     private float initialTimer;
     public int maxEnemies;
+
+    protected AudioSource audioSource;
+    public AudioClip generateEnemyAudio;
 
     // Start is called before the first frame update
     void Awake()
     {
         maxEnemies = System.Convert.ToInt32(SceneManager.GetActiveScene().name.Substring(
             SceneManager.GetActiveScene().name.LastIndexOf("l") + 1));
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = generateEnemyAudio;
     }
 
     void Start()
@@ -47,5 +52,5 @@ public abstract class EnemyGenerator : MonoBehaviour
         CancelInvoke("CreateStartEnemies");
     }
 
-    public abstract void CreateEnemy(int level, float speed);
+    public abstract void CreateEnemy(int level, float speed, int type);
 }

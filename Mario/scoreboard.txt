@@ -1,0 +1,5 @@
+mario;1000
+antonio;500
+pepe;300
+tete;200
+noo;100

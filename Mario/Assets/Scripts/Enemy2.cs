@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy2 : MonoBehaviour
 {
     protected float speed;
+    protected float limitSpeed;
     bool isGrounded;
     bool isStunned;
     bool isDeath;
@@ -12,6 +14,7 @@ public class Enemy2 : MonoBehaviour
     bool reduceLevel;
     int level;
     EnemyGenerator2 enemyGenerator;
+    MultiEnemyGeneratorController multiEnemyGenerator;
     Animator anim;
     Collider2D[] col2D;
     public enum Direction { Left, Right };
@@ -23,17 +26,19 @@ public class Enemy2 : MonoBehaviour
     {
         level = 2;
         speed = 0.05f;
+        limitSpeed = 0.12f;
 
         transformEnemy = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         col2D = GetComponents<Collider2D>();
         enemyGenerator = FindObjectOfType<EnemyGenerator2>();
+        multiEnemyGenerator =
+            FindObjectOfType<MultiEnemyGeneratorController>();
     }
     // Start is called before the first frame update
     void Start()
     {
-
         isStunned = false;
         isDeath = false;
         isTurning = false;
@@ -87,7 +92,6 @@ public class Enemy2 : MonoBehaviour
         if(reduceLevel)
         {
             anim.SetBool("Reduce", true);
-            reduceLevel = false;
         }
         else
         {
@@ -98,7 +102,7 @@ public class Enemy2 : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isStunned == false && isTurning == false)
+        if (isStunned == false && isTurning == false && reduceLevel == false)
         {
             if (direction == Direction.Right)
             {
@@ -129,7 +133,10 @@ public class Enemy2 : MonoBehaviour
         {
             if (transformEnemy.position.y < -2.5)
             {
-                enemyGenerator.CreateEnemy(this.level, this.speed);
+                if (multiEnemyGenerator == null)
+                    enemyGenerator.CreateEnemy(this.level, this.speed, 2);
+                else
+                    multiEnemyGenerator.CreateEnemy(this.level, this.speed, 2);
                 Destroy(gameObject);
             }
             else if (transformEnemy.position.x < 0)
@@ -142,7 +149,10 @@ public class Enemy2 : MonoBehaviour
         else if (transformEnemy.position.y < -5.5)
         {
             Destroy(gameObject);
-            GameSceneController.EnemyKilled(100);
+            if (SceneManager.GetActiveScene().name.StartsWith("Scene"))
+                GameSceneController.EnemyKilled(100);
+            else
+                GameSceneController.EnemyKilled(0);
         }
 
     }
@@ -195,6 +205,8 @@ public class Enemy2 : MonoBehaviour
                 reduceLevel = true;
                 level--;
                 speed += speed / 2;
+                if (speed > limitSpeed)
+                    speed = limitSpeed;
             }
             else if(level == 1)
             {
@@ -206,6 +218,8 @@ public class Enemy2 : MonoBehaviour
         {
             isStunned = false;
             isTurning = false;
+            level = 2;
+            speed = 0.05f;
         }
     }
 
@@ -220,6 +234,11 @@ public class Enemy2 : MonoBehaviour
         level = 2;
     }
 
+    public void DeactiveReduceLevel()
+    {
+        reduceLevel = false;
+    }
+
     public bool GetStun()
     {
         return isStunned;
@@ -228,6 +247,11 @@ public class Enemy2 : MonoBehaviour
     public bool GetTurn()
     {
         return isTurning;
+    }
+
+    public int GetLevel()
+    {
+        return level;
     }
 
     public void SetSpeed(float speed)
